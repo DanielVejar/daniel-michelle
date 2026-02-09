@@ -3,62 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daniel & Michelle 💙</title>
+<title>Daniel & Michelle 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
 <style>
-body {
-  margin: 0;
-  overflow: hidden;
-  font-family: 'Courier New', monospace;
-  background: radial-gradient(circle at bottom, #0f2027, #203a43, #2c5364);
-  color: white;
-}
-#startScreen {
-  position: fixed; inset: 0;
-  background: #0d1117;
-  display: flex; justify-content: center; align-items: center;
-  z-index: 10;
-}
-#startBtn {
-  padding: 18px 32px;
-  font-size: 20px;
-  border: none; border-radius: 35px;
-  background: #ff5c8a; color: white;
-  cursor: pointer;
-  box-shadow: 0 0 20px rgba(255,92,138,0.7);
-}
-#ui {
-  position: absolute;
-  top: 15px; left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.5);
-  padding: 12px 20px;
-  border-radius: 15px;
-  z-index: 2;
-  text-align: center;
-}
-#timer { font-size: 16px; }
-
-#subtitle {
-  position: absolute;
-  bottom: 90px;
-  width: 100%;
-  text-align: center;
-  font-size: 18px;
-  font-family: Arial, sans-serif;
-  color: #ffd1dc;
-  text-shadow: 0 0 10px #ff5c8a;
-  z-index: 3;
-  padding: 0 15px;
-  opacity: 0;
-  transform: scale(0.9);
-  transition: opacity 2s ease, transform 2s ease;
-}
-#subtitle.final {
-  opacity: 1;
-  transform: scale(1.05);
+body{
+  margin:0; overflow:hidden;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(180deg,#1a2a3a,#0f2027);
+  color:white;
 }
 
-canvas { position:absolute; inset:0; z-index:1; }
+#startScreen{
+  position:fixed; inset:0;
+  background:linear-gradient(135deg,#ff5c8a,#8a2be2);
+  display:flex; justify-content:center; align-items:center;
+  z-index:10;
+}
+
+#startBtn{
+  padding:18px 36px;
+  font-size:20px;
+  border:none; border-radius:40px;
+  background:white; color:#ff5c8a;
+  font-weight:600;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+
+#ui{
+  position:absolute;
+  top:20px; left:50%;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,.35);
+  padding:12px 24px;
+  border-radius:20px;
+  backdrop-filter:blur(8px);
+  text-align:center;
+  z-index:3;
+}
+
+#timer{ font-size:14px; opacity:.9 }
+
+#subtitle{
+  position:absolute;
+  bottom:110px;
+  width:100%;
+  text-align:center;
+  font-size:18px;
+  padding:0 20px;
+  color:#ffd1dc;
+  text-shadow:0 0 12px #ff5c8a;
+  z-index:3;
+  opacity:0;
+  transform:translateY(20px) scale(.95);
+  transition:all 2s ease;
+}
+#subtitle.final{
+  opacity:1;
+  transform:translateY(0) scale(1.15);
+}
+
+canvas{ position:absolute; inset:0; z-index:1; }
+
 </style>
 </head>
 <body>
@@ -68,138 +75,129 @@ canvas { position:absolute; inset:0; z-index:1; }
 </div>
 
 <div id="ui">
-  <div><strong>Daniel ❤️ Michelle</strong></div>
+  <div style="font-weight:600;">Daniel ❤️ Michelle</div>
   <div id="timer"></div>
 </div>
 
 <div id="subtitle"></div>
 
-<iframe id="music" width="0" height="0"
-  src="https://www.youtube.com/embed/1_iUABH9D3c?enablejsapi=1"
-  frameborder="0" allow="autoplay"></iframe>
+<audio id="music" preload="auto">
+  <source src="Those_Eyes.mp3" type="audio/mpeg">
+</audio>
 
 <canvas id="canvas"></canvas>
 
 <script>
-// BOTÓN
 const startBtn = document.getElementById("startBtn");
 const startScreen = document.getElementById("startScreen");
-const iframe = document.getElementById("music");
-startBtn.onclick = () => {
-  startScreen.style.display = "none";
-  iframe.src += "&autoplay=1";
+const music = document.getElementById("music");
+
+startBtn.onclick=()=>{
+  startScreen.style.display="none";
+  music.volume = 0.7;
+  music.play();
   startSubtitles();
 };
 
 // TIMER
-const startDate = new Date("2018-12-23T00:00:00");
+const startDate=new Date("2018-12-23T00:00:00");
 function updateTimer(){
-  const now = new Date();
-  let diff = now - startDate;
-  let days = Math.floor(diff / (1000*60*60*24));
-  let years = Math.floor(days/365);
-  let months = Math.floor((days%365)/30);
-  let remDays = days - (years*365 + months*30);
-  document.getElementById("timer").textContent =
-   `Desde 23/12/2018: ${years} años, ${months} meses, ${remDays} días 💙`;
+  const now=new Date();
+  let d=Math.floor((now-startDate)/(1000*60*60*24));
+  let y=Math.floor(d/365), m=Math.floor((d%365)/30), rd=d-(y*365+m*30);
+  document.getElementById("timer").textContent=
+   `Desde 23/12/2018: ${y} años, ${m} meses, ${rd} días 💙`;
 }
 setInterval(updateTimer,1000); updateTimer();
 
 // SUBTÍTULOS
-const subtitles = [
- {t:0,  text:"Desde que llegaste, mis ojos solo saben buscarte a ti…"},
- {t:8,  text:"Todo cambió cuando tu sonrisa se cruzó con mi destino."},
- {t:16, text:"En ti encontré calma, amor y un hogar."},
- {t:24, text:"Tus manos son mi lugar seguro."},
- {t:32, text:"Mi mundo tiene sentido desde que estás en él."},
- {t:40, text:"No hay día que no agradezca por haberte encontrado."},
- {t:48, text:"Mi corazón te eligió… y lo hará siempre."},
- {t:56, text:"Mi Cuchurrumina, por siempre contigo. — Tu Cuchurrimun"}
+const subtitles=[
+ {t:0,text:"Desde que llegaste, mis ojos solo saben buscarte a ti…"},
+ {t:8,text:"Todo cambió cuando tu sonrisa se cruzó con mi destino."},
+ {t:16,text:"En ti encontré calma, amor y un hogar."},
+ {t:24,text:"Tus manos son mi lugar seguro."},
+ {t:32,text:"Mi mundo tiene sentido desde que estás en él."},
+ {t:40,text:"No hay día que no agradezca por haberte encontrado."},
+ {t:48,text:"Mi corazón te eligió… y lo hará siempre."},
+ {t:56,text:"Mi Cuchurrumina, por siempre contigo. — Tu Cuchurrimun"}
 ];
 
-let finalMoment = false;
+let finalMoment=false;
 
 function startSubtitles(){
-  const sub = document.getElementById("subtitle");
-  let i=0;
-  const startTime = Date.now();
-  setInterval(()=>{
-    const elapsed = (Date.now()-startTime)/1000;
-    if(i<subtitles.length && elapsed>=subtitles[i].t){
-      sub.textContent = subtitles[i].text;
-      if(i === subtitles.length-1){
-        sub.classList.add("final");
-        finalMoment = true;
-      } else {
-        sub.classList.remove("final");
-        sub.style.opacity = 1;
-      }
-      i++;
+ const sub=document.getElementById("subtitle");
+ let i=0,start=Date.now();
+ setInterval(()=>{
+  let e=(Date.now()-start)/1000;
+  if(i<subtitles.length && e>=subtitles[i].t){
+    sub.textContent=subtitles[i].text;
+    sub.style.opacity=1;
+    if(i===subtitles.length-1){
+      sub.classList.add("final");
+      finalMoment=true;
     }
-  },500);
+    i++;
+  }
+ },500);
 }
 
-// ÁRBOL + CORAZONES
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
-function resize(){
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-}
+// CANVAS TREE
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+function resize(){ canvas.width=innerWidth; canvas.height=innerHeight }
 resize(); addEventListener("resize",resize);
 
-let growth = 0;
-let hearts = [];
+let growth=0, hearts=[];
 
 function drawTree(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.strokeStyle="#6b4f3f"; ctx.lineWidth=10;
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ ctx.strokeStyle="#6b4f3f"; ctx.lineWidth=10;
+ ctx.beginPath();
+ ctx.moveTo(canvas.width/2,canvas.height);
+ ctx.lineTo(canvas.width/2,canvas.height-growth);
+ ctx.stroke();
+ if(growth>120){
+  ctx.lineWidth=5;
   ctx.beginPath();
-  ctx.moveTo(canvas.width/2, canvas.height);
-  ctx.lineTo(canvas.width/2, canvas.height - growth);
+  ctx.moveTo(canvas.width/2,canvas.height-120);
+  ctx.lineTo(canvas.width/2-60,canvas.height-220);
+  ctx.moveTo(canvas.width/2,canvas.height-140);
+  ctx.lineTo(canvas.width/2+70,canvas.height-230);
   ctx.stroke();
-
-  if(growth>120){
-    ctx.lineWidth=5;
-    ctx.beginPath();
-    ctx.moveTo(canvas.width/2, canvas.height-120);
-    ctx.lineTo(canvas.width/2-60, canvas.height-220);
-    ctx.moveTo(canvas.width/2, canvas.height-140);
-    ctx.lineTo(canvas.width/2+70, canvas.height-230);
-    ctx.stroke();
-  }
+ }
 }
 
 function addHeart(){
-  hearts.push({
-    x: canvas.width/2 + Math.random()*160-80,
-    y: canvas.height-260 - Math.random()*100,
-    v: Math.random()*0.35+0.2
-  });
+ hearts.push({
+  x:canvas.width/2+Math.random()*160-80,
+  y:canvas.height-260-Math.random()*100,
+  v:Math.random()*0.35+.2
+ });
 }
 
 function drawHearts(){
-  hearts.forEach(h=>{
-    ctx.fillStyle="#ff5c8a";
-    ctx.beginPath();
-    ctx.moveTo(h.x,h.y);
-    ctx.bezierCurveTo(h.x-4,h.y-4,h.x-12,h.y+4,h.x,h.y+12);
-    ctx.bezierCurveTo(h.x+12,h.y+4,h.x+4,h.y-4,h.x,h.y);
-    ctx.fill();
-    h.y-=h.v;
-  });
+ hearts.forEach(h=>{
+  ctx.fillStyle="#ff5c8a";
+  ctx.beginPath();
+  ctx.moveTo(h.x,h.y);
+  ctx.bezierCurveTo(h.x-4,h.y-4,h.x-12,h.y+4,h.x,h.y+12);
+  ctx.bezierCurveTo(h.x+12,h.y+4,h.x+4,h.y-4,h.x,h.y);
+  ctx.fill();
+  h.y-=h.v;
+ });
 }
 
 function animate(){
-  if(growth<230) growth+=0.4;
-  drawTree();
-  if(growth>170 && Math.random() < (finalMoment ? 0.25 : 0.05)) addHeart();
-  drawHearts();
-  requestAnimationFrame(animate);
+ if(growth<230) growth+=.4;
+ drawTree();
+ if(growth>170 && Math.random()<(finalMoment?.25:.05)) addHeart();
+ drawHearts();
+ requestAnimationFrame(animate);
 }
 animate();
 </script>
 
 </body>
 </html>
+
+
